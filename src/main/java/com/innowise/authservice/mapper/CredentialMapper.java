@@ -10,5 +10,6 @@ public interface CredentialMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "role", expression = "java(com.innowise.authservice.util.Role.USER)")
+    @Mapping(target = "password", ignore = true)
     Credential toCredential(RegisterRequest registerRequest);
 }

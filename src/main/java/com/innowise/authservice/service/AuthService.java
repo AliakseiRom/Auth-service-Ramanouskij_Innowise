@@ -7,6 +7,7 @@ import com.innowise.authservice.mapper.CredentialMapper;
 import com.innowise.authservice.model.Credential;
 import com.innowise.authservice.repository.CredentialRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -19,9 +20,14 @@ public class AuthService {
 
     private final CredentialMapper credentialMapper;
 
+    private final PasswordEncoder passwordEncoder;
+
     public AuthResponse register(RegisterRequest registerRequest) {
 
         Credential credential = credentialMapper.toCredential(registerRequest);
+        credential.setPassword(
+                passwordEncoder.encode(registerRequest.getPassword())
+        );
 
         credentialRepository.save(credential);
 
@@ -36,7 +42,7 @@ public class AuthService {
         }
         Credential credential = credentialOptional.get();
 
-        if (!credential.getPassword().equals(loginRequest.getPassword())) {
+        if (!passwordEncoder.matches(loginRequest.getPassword(), credential.getPassword())) {
             throw new RuntimeException("Invalid password");
         }
 
