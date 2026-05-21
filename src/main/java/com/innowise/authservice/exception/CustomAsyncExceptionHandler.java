@@ -1,4 +1,4 @@
-package auth_service.auth_service.exception;
+package com.innowise.authservice.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;

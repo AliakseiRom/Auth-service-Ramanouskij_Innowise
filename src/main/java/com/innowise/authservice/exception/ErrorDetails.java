@@ -1,4 +1,4 @@
-package auth_service.auth_service.exception;
+package com.innowise.authservice.exception;
 
 import lombok.Getter;
 import lombok.Setter;

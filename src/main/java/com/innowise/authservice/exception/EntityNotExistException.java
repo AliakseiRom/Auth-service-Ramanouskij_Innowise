@@ -1,4 +1,4 @@
-package auth_service.auth_service.exception;
+package com.innowise.authservice.exception;
 
 public class EntityNotExistException extends CommonException {
     public EntityNotExistException(String message) {
