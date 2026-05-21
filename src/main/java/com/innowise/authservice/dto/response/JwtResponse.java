@@ -1,11 +1,14 @@
 package com.innowise.authservice.dto.response;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class AuthResponse {
+public class JwtResponse {
 
-    private String message;
+    private String accessToken;
+
+    private String refreshToken;
 }
