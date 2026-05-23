@@ -6,6 +6,7 @@ import com.innowise.authservice.dto.request.*;
 import com.innowise.authservice.dto.response.AuthResponse;
 import com.innowise.authservice.dto.response.JwtResponse;
 import com.innowise.authservice.dto.response.ValidateTokenResponse;
+import com.innowise.authservice.exception.AccessDeniedException;
 import com.innowise.authservice.exception.EntityNotExistException;
 import com.innowise.authservice.exception.InvalidCredentialsException;
 import com.innowise.authservice.exception.JwtException;
@@ -14,7 +15,6 @@ import com.innowise.authservice.model.Credential;
 import com.innowise.authservice.repository.CredentialRepository;
 import com.innowise.authservice.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
