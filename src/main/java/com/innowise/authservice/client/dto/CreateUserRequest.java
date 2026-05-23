@@ -1,15 +1,11 @@
-package com.innowise.authservice.dto.request;
+package com.innowise.authservice.client.dto;
 
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
-public class RegisterRequest {
-
-    private String login;
-
-    private String password;
+public class CreateUserRequest {
 
     private String name;
 
