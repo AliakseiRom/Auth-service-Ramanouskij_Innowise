@@ -24,7 +24,6 @@ databaseChangeLog:
 
                   constraints:
                     unique: true
-                    nullable: false
 
               - column:
                   name: login
