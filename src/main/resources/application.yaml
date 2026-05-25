@@ -16,6 +16,9 @@ spring:
     properties:
       hibernate:
         dialect: "org.hibernate.dialect.PostgreSQLDialect"
+  services:
+    user-service:
+      url: http://localhost:8081
 jwt:
   secret: ${JWT_SECRET_KEY}
   access-expiration: 900000
