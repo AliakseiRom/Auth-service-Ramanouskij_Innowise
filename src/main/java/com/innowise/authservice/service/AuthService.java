@@ -15,11 +15,13 @@ import com.innowise.authservice.model.Credential;
 import com.innowise.authservice.repository.CredentialRepository;
 import com.innowise.authservice.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -36,30 +38,49 @@ public class AuthService {
 
     public AuthResponse register(RegisterRequest registerRequest) {
 
-        CreateUserRequest userRequest = new CreateUserRequest();
-
-        userRequest.setName(registerRequest.getName());
-        userRequest.setSurname(registerRequest.getSurname());
-        userRequest.setBirthDate(registerRequest.getBirthDate());
-        userRequest.setEmail(registerRequest.getEmail());
-
-        Long userId = userClient.createUser(userRequest);
-
-        Credential credential = credentialMapper.toCredential(registerRequest);
-
-        credential.setUserId(userId);
-
-        credential.setPassword(
-                passwordEncoder.encode(registerRequest.getPassword())
-        );
-
         if (credentialRepository.existsCredentialByLogin(registerRequest.getLogin())) {
             throw new InvalidCredentialsException("Login already in use");
         }
 
-        credentialRepository.save(credential);
+        Long userId = null;
 
-        return new AuthResponse("User registered successfully");
+        try {
+            CreateUserRequest userRequest = new CreateUserRequest();
+
+            userRequest.setName(registerRequest.getName());
+            userRequest.setSurname(registerRequest.getSurname());
+            userRequest.setBirthDate(registerRequest.getBirthDate());
+            userRequest.setEmail(registerRequest.getEmail());
+
+            userId = userClient.createUser(userRequest);
+
+            Credential credential = credentialMapper.toCredential(registerRequest);
+
+            credential.setUserId(userId);
+
+            credential.setPassword(
+                    passwordEncoder.encode(registerRequest.getPassword())
+            );
+
+            credentialRepository.save(credential);
+
+            return new AuthResponse("User registered successfully");
+        } catch (Exception ex) {
+
+            if (userId != null) {
+                try {
+                    userClient.rollbackUserCreation(registerRequest.getEmail());
+                } catch (Exception rollbackException) {
+                    log.error(
+                            "Failed to rollback user creation for email: {}",
+                            registerRequest.getEmail(),
+                            rollbackException
+                    );
+                }
+            }
+
+            throw ex;
+        }
     }
 
     public JwtResponse login(LoginRequest loginRequest) {
