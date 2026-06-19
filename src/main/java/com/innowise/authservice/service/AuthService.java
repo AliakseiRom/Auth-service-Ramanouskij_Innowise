@@ -1,5 +1,7 @@
 package com.innowise.authservice.service;
 
+import com.innowise.authservice.client.UserClient;
+import com.innowise.authservice.client.dto.CreateUserRequest;
 import com.innowise.authservice.dto.request.*;
 import com.innowise.authservice.dto.response.AuthResponse;
 import com.innowise.authservice.dto.response.JwtResponse;
@@ -30,9 +32,23 @@ public class AuthService {
 
     private final JwtService jwtService;
 
+    private final UserClient userClient;
+
     public AuthResponse register(RegisterRequest registerRequest) {
 
+        CreateUserRequest userRequest = new CreateUserRequest();
+
+        userRequest.setName(registerRequest.getName());
+        userRequest.setSurname(registerRequest.getSurname());
+        userRequest.setBirthDate(registerRequest.getBirthDate());
+        userRequest.setEmail(registerRequest.getEmail());
+
+        Long userId = userClient.createUser(userRequest);
+
         Credential credential = credentialMapper.toCredential(registerRequest);
+
+        credential.setUserId(userId);
+
         credential.setPassword(
                 passwordEncoder.encode(registerRequest.getPassword())
         );
