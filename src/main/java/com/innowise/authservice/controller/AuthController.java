@@ -1,8 +1,10 @@
 package com.innowise.authservice.controller;
 
 import com.innowise.authservice.dto.request.LoginRequest;
+import com.innowise.authservice.dto.request.RefreshRequest;
 import com.innowise.authservice.dto.request.RegisterRequest;
 import com.innowise.authservice.dto.response.AuthResponse;
+import com.innowise.authservice.dto.response.JwtResponse;
 import com.innowise.authservice.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,7 +27,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest loginRequest) {
         return new ResponseEntity<>(authService.login(loginRequest), HttpStatus.OK);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<JwtResponse> refresh(@RequestBody RefreshRequest request) {
+        return ResponseEntity.ok(authService.refresh(request));
     }
 }
