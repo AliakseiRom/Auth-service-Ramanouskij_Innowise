@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auth_service
+    username: postgres
+    password: 12345
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+
+jwt:
+  secret: ${JWT_SECRET_KEY}
+  access-expiration: 900000
+  refresh-expiration: 604800000
+
