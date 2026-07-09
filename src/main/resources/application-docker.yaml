@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://auth-db:5432/auth_service
+    url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
 
@@ -15,4 +15,4 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   services:
     user-service:
-      url: http://host.docker.internal:8081
+      url: http://user-service:8081

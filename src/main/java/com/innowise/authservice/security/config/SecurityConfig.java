@@ -74,7 +74,9 @@ public class SecurityConfig {
                                 "/auth/register",
                                 "/auth/login",
                                 "/auth/refresh",
-                                "/auth/validate"
+                                "/auth/validate",
+                                "/actuator/**",
+                                "/actuator/health/**"
                                 ).permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").hasRole("ADMIN")
                         .anyRequest().authenticated()
